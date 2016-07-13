@@ -9,7 +9,7 @@ export default Ember.Component.extend(CerebralMixin, {
     }
   },
 
-  styles: Ember.computed('isEditing', 'todo', function() {
+  classList: Ember.computed('isEditing', 'todo', function() {
     const editing = this.get('isEditing') ? 'editing' : '';
     const completed = this.get('todo.completed') ? 'completed' : '';
     return `${completed} ${editing}`;
@@ -46,7 +46,7 @@ export default Ember.Component.extend(CerebralMixin, {
   },
 
   layout: hbs`
-    <li class={{styles}}>
+    <li class={{classList}}>
       <div class="view">
         <input
           class="toggle"
