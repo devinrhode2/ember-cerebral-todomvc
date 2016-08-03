@@ -2,7 +2,7 @@ import addons from 'npm:cerebral-addons';
 const {copy, push, toggle} = addons;
 
 // API
-export function setAjaxDefaults({}) {
+export function setAjaxDefaults() {
   Ember.$.ajaxSetup({
     contentType: 'application/json',
     processData: false,
@@ -30,15 +30,18 @@ export function createTodo({state,services,output}) {
     data: state.get('newTodo')
   })
   .done(response => output({response}))
-  .fail((response) => {debugger});
+  .fail(response => {debugger});
 }
 createTodo.async = true;
 
 export function toggleEachCompletionStatus({input,state,output}) {
-  const i       = state.get('todos').findIndex((todo) => todo.id === input.id);
-  const todo    = state.findWhere('todos', {id: input.id});
-  const newTodo = Object.assign({...todo}, {completed: !todo.completed});
-  state.splice('todos', i ,1 , newTodo);
+  const i       = state.get('todos').findIndex((todo) => todo.id === input.id)
+  const todo    = state.findWhere('todos', {id: input.id})
+  const oldTodo = {...todo};
+  const newTodo = Object.assign(oldTodo,{
+    'completed': !todo.completed
+  })
+  state.splice('todos', i ,1 , newTodo)
 }
 
 export function updateTodoTitle({input,state}) {
